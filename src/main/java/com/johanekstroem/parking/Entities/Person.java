@@ -11,6 +11,13 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Person {
   
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
+    String firstName;
+    String lastName;
+    
+  
   public long getId() {
     return id;
   }
@@ -37,14 +44,6 @@ public class Person {
   }
 
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  long id;
-  String firstName;
-  String lastName;
-  
-
-  
   public Person(){}
   public Person(String firstName, String lastName) {
     this.firstName = firstName;
@@ -54,8 +53,5 @@ public class Person {
 
 @OneToMany(mappedBy ="person")
     private Set<Car> cars;
-
-  
-
 
 }
