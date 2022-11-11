@@ -2,6 +2,7 @@ package com.johanekstroem.parking.Entities;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +15,9 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+    @JsonProperty("fornamn")
     String firstName;
+    @JsonProperty("efternamn")
     String lastName;
     
   
