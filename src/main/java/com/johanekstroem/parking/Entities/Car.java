@@ -17,7 +17,7 @@ public class Car {
   
   @ManyToOne
   @JoinColumn(name="person_id")
-  private Person person;
+  private Customer person;
 
 
   public long getId() {
@@ -40,12 +40,12 @@ public class Car {
   }
 
 
-  public Person getPerson() {
+  public Customer getPerson() {
     return person;
   }
 
 
-  public void setPerson(Person person) {
+  public void setPerson(Customer person) {
     this.person = person;
   }
 

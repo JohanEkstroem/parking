@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johanekstroem.parking.Entities.Car;
-import com.johanekstroem.parking.Entities.Person;
+import com.johanekstroem.parking.Entities.Customer;
 import com.johanekstroem.parking.Repositories.CarRepository;
-import com.johanekstroem.parking.Repositories.PersonRepository;
+import com.johanekstroem.parking.Repositories.CustomerRepository;
 
 @RestController
 @RequestMapping("api")
 public class ParkingController {
   CarRepository carRepository;
-  PersonRepository personRepository;
+  CustomerRepository customerRepository;
 
-  public ParkingController(CarRepository carRepository, PersonRepository personRepository){
+  public ParkingController(CarRepository carRepository, CustomerRepository customerRepository){
     this.carRepository = carRepository;
-    this.personRepository = personRepository;
+    this.customerRepository = customerRepository;
   }
   
   @GetMapping("/")
@@ -32,11 +32,11 @@ public class ParkingController {
     carRepository.save(car);
   }
 
-  @PostMapping("/person")
-  public String addPerson(@RequestBody Person person) {
+  @PostMapping("/customer")
+  public String addCustomer(@RequestBody Customer customer) {
     //validate data
-      personRepository.save(person);
-      return "Person Saved.";
+      customerRepository.save(customer);
+      return "Customer Saved.";
   } 
 
 
