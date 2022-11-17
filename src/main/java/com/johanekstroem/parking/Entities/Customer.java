@@ -10,17 +10,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Person {
+public class Customer {
   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @JsonProperty("fornamn")
+    @JsonProperty("firstName")
     String firstName;
-    @JsonProperty("efternamn")
+    @JsonProperty("lastName")
     String lastName;
     
-  
+
+    
+@OneToMany(mappedBy ="customer")
+    private Set<Car> cars;
+
   public long getId() {
     return id;
   }
@@ -45,16 +49,5 @@ public class Person {
   public void setCars(Set<Car> cars) {
     this.cars = cars;
   }
-
-
-  public Person(){}
-  public Person(String firstName, String lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-  }
-  
-
-@OneToMany(mappedBy ="person")
-    private Set<Car> cars;
 
 }
