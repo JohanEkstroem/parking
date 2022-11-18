@@ -1,34 +1,32 @@
 package com.johanekstroem.parking.Entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Customer {
-  
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-    @JsonProperty("firstName")
-    String firstName;
-    @JsonProperty("lastName")
-    String lastName;
-    
 
-    
-@OneToMany(mappedBy ="customer")
-    private Set<Car> cars;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String firstName;
+  private String lastName;
 
-  public long getId() {
+  @OneToMany
+  @JoinColumn(name = "customer_id")
+  private Set<Car> cars = new HashSet<>();
+
+  public Long getId() {
     return id;
   }
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
   public String getFirstName() {
@@ -43,11 +41,4 @@ public class Customer {
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
-  public Set<Car> getCars() {
-    return cars;
-  }
-  public void setCars(Set<Car> cars) {
-    this.cars = cars;
-  }
-
 }

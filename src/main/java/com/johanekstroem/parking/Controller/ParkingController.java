@@ -28,18 +28,57 @@ public class ParkingController {
   }
 
   @PostMapping("/car")
-  public void addCar(@RequestBody Car car) {
-    carRepository.save(car);
+  public Car addCar(@RequestBody Car car) {
+    return carRepository.save(car);
   }
 
   @PostMapping("/customer")
-  public String addCustomer(@RequestBody Customer customer) {
-    //validate data
-      customerRepository.save(customer);
-      return "Customer Saved.";
-  } 
+  public Customer addCustomer(@RequestBody Customer customer) {
+    return customerRepository.save(customer);
+  }
 
+/*   @PostMapping("/customer")
+  public Customer addCustomer(@RequestBody Customer customer) {
+    //validate data
+      return customerRepository.save(customer);
+      //return "Customer Saved.";
+  } 
+ */
 
 
 
 }
+
+// POST: http://localhost:8080/api/customer
+/* {
+"first_name":"Johan",
+"last_name":"Ekström",
+    
+    "cars": [
+        {
+            "registrationNumber": "ABC123"
+        },
+        {
+            
+            "registrationNumber": "CBA321"
+        }
+        
+    ]
+    }
+    */
+
+
+    /*    {
+    // POST: http://localhost:8080/api/parkingevent
+     "carid":"1",
+     "vilkenparkeringsplatsID":"22",
+     "stop":"Date.now() + 1hr"
+    
+    } */
+
+//is_ongoing = false
+
+    /* 
+     * PATCH: http://localhost:8080/api/parkingevent/
+     * 
+     */
