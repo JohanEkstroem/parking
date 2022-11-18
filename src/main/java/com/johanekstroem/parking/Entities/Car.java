@@ -1,6 +1,8 @@
 package com.johanekstroem.parking.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,18 +13,13 @@ import jakarta.persistence.ManyToOne;
 public class Car {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+
   private Long id;
   private String registrationNumber;
 
-   @ManyToOne
-  private Customer customer;
-  
-  public Customer getCustomer() {
-    return customer;
-  }
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
-  } 
+  @ManyToOne
+   @JsonIgnore
+  private Customer customer; 
   public Long getId() {
     return id;
   }
@@ -34,6 +31,12 @@ public class Car {
   }
   public void setRegistrationNumber(String registrationNumber) {
     this.registrationNumber = registrationNumber;
+  }
+  public Customer getCustomer() {
+    return customer;
+  }
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
   }
 
 }
