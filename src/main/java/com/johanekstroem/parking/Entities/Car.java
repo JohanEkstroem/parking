@@ -18,6 +18,7 @@ public class Car {
   private String registrationNumber;
 
   @ManyToOne
+  //@JoinColumn(name = "fk_customer")
    @JsonIgnore
   private Customer customer; 
   public Long getId() {
