@@ -22,21 +22,13 @@ public class ParkingController {
     this.customerRepository = customerRepository;
   }
   
-  @GetMapping("/")
-  public String demo() {
-    return "Hello World";
-  }
 /* 
   @PostMapping("/car")
   public Car addCar(@RequestBody Car car) {
     return carRepository.save(car);
   }
  */
-  @PostMapping("/customer")
-  public Customer addCustomer(@RequestBody Customer customer) {
-    //TODO Validate data
-    return customerRepository.save(customer);
-  }
+
 
   @GetMapping("/addCustomer")
   public Customer addCustomerss() {
@@ -56,14 +48,9 @@ public class ParkingController {
     customer.addCar(car2);
      
     return customerRepository.save(customer);
-
   }
   
 
-  @GetMapping("/cust")
-  public String lekoskoj() {
-    return "Hallåj";
-  }
 /*   @PostMapping("/customer")
   public Customer addCustomer(@RequestBody Customer customer) {
     //validate data
