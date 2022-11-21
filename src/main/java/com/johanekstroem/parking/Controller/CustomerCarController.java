@@ -1,8 +1,10 @@
 package com.johanekstroem.parking.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,5 +38,13 @@ public class CustomerCarController {
 
     return customerRepository.findAll();
   }
-  //Find Customer with ID add add a new car
+
+  @GetMapping("/customer/{id}")
+  public Optional<Customer> getAllCustomerByID(@PathVariable("id") Long id){
+    var customer = customerRepository.findById(id);
+    if (customer.isPresent()) {
+      return customer;
+  }
+   return null;
+  }
 }
