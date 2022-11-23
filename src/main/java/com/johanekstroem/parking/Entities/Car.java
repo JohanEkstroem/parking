@@ -14,12 +14,13 @@ public class Car {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+  //@JsonIgnore
   private Long id;
   private String registrationNumber;
-
+  
   @ManyToOne
+  @JsonIgnore
   //@JoinColumn(name = "fk_customer")
-   @JsonIgnore
   private Customer customer; 
   public Long getId() {
     return id;

@@ -1,6 +1,5 @@
 package com.johanekstroem.parking.Controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,11 +39,27 @@ public class CustomerCarController {
   }
 
   @GetMapping("/customer/{id}")
-  public Optional<Customer> getAllCustomerByID(@PathVariable("id") Long id){
+  public Optional<Customer> getAllCustomerByID(@PathVariable("id") Long id) {
     var customer = customerRepository.findById(id);
     if (customer.isPresent()) {
       return customer;
+    }
+    return null;
   }
-   return null;
+
+  @PostMapping("/customer/{id}/car")
+  public Customer addCarToCustomer(@PathVariable("id") Long id, @RequestBody Car car) {
+    //TODO:
+    // Find Customer and add car to that specific customer
+    Optional<Customer> customerRepo = customerRepository.findById(id);
+    if (customerRepo.isPresent()) {
+      Customer customer = customerRepo.get();
+      customer.addCar(car);
+      carRepository.save(car);
+      return customerRepository.save(customer);
+    } else {
+      return null;
+    }
   }
+    
 }
