@@ -66,4 +66,14 @@ public class CustomerCarController {
     return carRepository.findAll();
   }
 
+  
+  @GetMapping("/cars/{id}")
+  public Optional<Car> getAllCarsByID(@PathVariable("id") Long id) {
+    var car = carRepository.findById(id);
+    if (car.isPresent()) {
+      return car;
+    }
+    return null;
+  }
+
 }
