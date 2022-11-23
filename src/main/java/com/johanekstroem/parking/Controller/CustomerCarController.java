@@ -34,7 +34,6 @@ public class CustomerCarController {
 
   @GetMapping("/customer")
   public Iterable<Customer> getAllCustomers() {
-
     return customerRepository.findAll();
   }
 
@@ -61,5 +60,10 @@ public class CustomerCarController {
       return null;
     }
   }
-    
+
+  @GetMapping("/cars")
+  public Iterable<Car> getAllCars() {
+    return carRepository.findAll();
+  }
+
 }
