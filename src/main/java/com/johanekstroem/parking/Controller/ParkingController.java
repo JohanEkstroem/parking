@@ -1,8 +1,6 @@
 package com.johanekstroem.parking.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,14 +20,6 @@ public class ParkingController {
     this.customerRepository = customerRepository;
   }
   
-/* 
-  @PostMapping("/car")
-  public Car addCar(@RequestBody Car car) {
-    return carRepository.save(car);
-  }
- */
-
-
   @GetMapping("/addCustomer")
   public Customer addCustomerss() {
     Customer customer = new Customer();
@@ -49,16 +39,5 @@ public class ParkingController {
      
     return customerRepository.save(customer);
   }
-  
-
-/*   @PostMapping("/customer")
-  public Customer addCustomer(@RequestBody Customer customer) {
-    //validate data
-      return customerRepository.save(customer);
-      //return "Customer Saved.";
-  } 
- */
-
-
 
 }
