@@ -1,6 +1,9 @@
 package com.johanekstroem.parking.Entities;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -8,20 +11,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Car {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-  //@JsonIgnore
   private Long id;
   private String registrationNumber;
   
   @ManyToOne
   @JsonIgnore
-  //@JoinColumn(name = "fk_customer")
-  private Customer customer; 
+  private Customer customer;
+  
+  @OneToMany(mappedBy = "car")
+  private Set<ParkingEvent> parkingEvent = new HashSet<>();
+  
+
+  public Set<ParkingEvent> getParkingEvent() {
+    return parkingEvent;
+  }
+  public void setParkingEvent(Set<ParkingEvent> parkingEvent) {
+    this.parkingEvent = parkingEvent;
+  }
   public Long getId() {
     return id;
   }
