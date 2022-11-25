@@ -2,9 +2,12 @@ package com.johanekstroem.parking.Entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -28,9 +31,12 @@ public class ParkingEvent {
   @UpdateTimestamp
   private LocalDateTime updated;
 
+  @Column(nullable = false)
   private LocalDateTime stoptime;
 
-  private Boolean isActive;
+
+  @ColumnDefault("true")
+  private Boolean isActive = true;
   
   
   public Boolean getIsActive() {
