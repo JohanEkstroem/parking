@@ -1,5 +1,11 @@
 package com.johanekstroem.parking.Entities;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,18 +19,62 @@ public class ParkingEvent {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   
+  @CreationTimestamp
+  @Column(name= "created", nullable = false, updatable = false)
+  private LocalDateTime created;
+
+  @UpdateTimestamp
+  private LocalDateTime updated;
+
+  private LocalDateTime stoptime;
+
+  private Boolean isOngoing;
+  
+  
   @ManyToOne
   private Car car;
 
   @ManyToOne
   private ParkingSpot parkingSpot;
 
-  public ParkingSpot getParkingSpot() {
-    return parkingSpot;
+  public Long getId() {
+    return id;
   }
 
-  public void setParkingSpot(ParkingSpot parkingSpot) {
-    this.parkingSpot = parkingSpot;
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public LocalDateTime getCreated() {
+    return created;
+  }
+
+  public void setCreated(LocalDateTime created) {
+    this.created = created;
+  }
+
+  public LocalDateTime getUpdated() {
+    return updated;
+  }
+
+  public void setUpdated(LocalDateTime updated) {
+    this.updated = updated;
+  }
+
+  public LocalDateTime getStoptime() {
+    return stoptime;
+  }
+
+  public void setStoptime(LocalDateTime stoptime) {
+    this.stoptime = stoptime;
+  }
+
+  public Boolean getIsOngoing() {
+    return isOngoing;
+  }
+
+  public void setIsOngoing(Boolean isOngoing) {
+    this.isOngoing = isOngoing;
   }
 
   public Car getCar() {
@@ -35,13 +85,15 @@ public class ParkingEvent {
     this.car = car;
   }
 
-  public Long getId() {
-    return id;
+  public ParkingSpot getParkingSpot() {
+    return parkingSpot;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setParkingSpot(ParkingSpot parkingSpot) {
+    this.parkingSpot = parkingSpot;
   }
+
+  
 
   //  What information does a parking event need?
   //  *Car
