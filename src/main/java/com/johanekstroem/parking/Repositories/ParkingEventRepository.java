@@ -8,5 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import com.johanekstroem.parking.Entities.ParkingEvent;
 
 public interface ParkingEventRepository extends CrudRepository<ParkingEvent, Long> {
- 
+   @Query("""
+            SELECT p FROM ParkingEvent p WHERE NOT (p.isActive) = true
+            """)
+    List<ParkingEvent> filterOnActiveParkingEvents();
   }

@@ -1,8 +1,14 @@
 package com.johanekstroem.parking.Controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johanekstroem.parking.Entities.Car;
@@ -53,10 +59,8 @@ public class ParkingEventController {
   }
   
 
-  //Creates a new parking event
   @PostMapping("/parkingevent")
   public ParkingEvent startParking(@RequestBody ParkingEvent parkingEvent) {
-    // Plocka ut bil-ID från JSON
     Long carID = parkingEvent.getCar().getId();
     var carOptional = carRepository.findById(carID);
     if (carOptional.isPresent()) {
@@ -73,19 +77,28 @@ public class ParkingEventController {
       parkingSpotRepository.save(parkingSpot);
     }
 
-    return parkingEventRepository.save(parkingEvent); 
-    // Leta upp bilen i databasen som har det ID
-    // Lägga till ett parkeringsevent på den bilen
-    // Spara bilen till databasen
-
-    // Plocka parkeringsplats-ID från JSON
-    // Leta upp parkeringsplatsen i databasen som har det ID
-    // Lägga till ett parkeringsevent på den parkeringsplatsen
-    // Spara parkeringsplatsen till databasen
-    
-    // Spara parkeringstillfället i databasen
-    //return ResponseEntity.ok(HttpStatus.OK);
+    return parkingEventRepository.save(parkingEvent);
 
   }
+  
+  @GetMapping("/parkingevent")
+  public Iterable<ParkingEvent> getAllParkingEvents() {
+    return parkingEventRepository.findAll();
+  }
+
+  @GetMapping("/parkingevent/{id}")
+  public Optional<ParkingEvent> getAllParkingEventsByID(@PathVariable("id") Long id) {
+    var parking = parkingEventRepository.findById(id);
+    if (parking.isPresent()) {
+      return parking;
+    }
+    return null;
+  }
+
+   @GetMapping(path = "/parkingevent", params = "filter")
+    public List<ParkingEvent> filterActiveParkings(@RequestParam String filter) {
+        return parkingEventRepository.filterOnActiveParkingEvents();
+    }
+
 
 }
