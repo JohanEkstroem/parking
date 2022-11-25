@@ -17,22 +17,25 @@ import com.johanekstroem.parking.Entities.ParkingSpot;
 import com.johanekstroem.parking.Repositories.CarRepository;
 import com.johanekstroem.parking.Repositories.ParkingEventRepository;
 import com.johanekstroem.parking.Repositories.ParkingSpotRepository;
+import com.johanekstroem.parking.Service.ValidateStopTime;
 
 @RestController
 @RequestMapping("api")
 public class ParkingEventController {
 
   public ParkingEventController(CarRepository carRepository, ParkingSpotRepository parkingSpotRepository,
-      ParkingEventRepository parkingEventRepository) {
+      ParkingEventRepository parkingEventRepository, ValidateStopTime validateStopTime) {
     this.carRepository = carRepository;
     this.parkingSpotRepository = parkingSpotRepository;
     this.parkingEventRepository = parkingEventRepository;
+    this.validateStopTime = validateStopTime;
   }
 
 
   CarRepository carRepository;
   ParkingSpotRepository parkingSpotRepository;
   ParkingEventRepository parkingEventRepository;
+  ValidateStopTime validateStopTime;
   
   public CarRepository getCarRepository() {
     return carRepository;
@@ -61,25 +64,32 @@ public class ParkingEventController {
 
   @PostMapping("/parkingevent")
   public ParkingEvent startParking(@RequestBody ParkingEvent parkingEvent) {
-    Long carID = parkingEvent.getCar().getId();
-    var carOptional = carRepository.findById(carID);
-    if (carOptional.isPresent()) {
-      Car bil = carOptional.get();
-      bil.addParkingEvent(parkingEvent);
-      carRepository.save(bil);
+    //Validate that stoptime is after current time
+    var stoptime = parkingEvent.getStoptime();
+
+    if (validateStopTime.isInFuture(stoptime)) {
+      Long carID = parkingEvent.getCar().getId();
+      var carOptional = carRepository.findById(carID);
+      if (carOptional.isPresent()) {
+        Car car = carOptional.get();
+        car.addParkingEvent(parkingEvent);
+        carRepository.save(car);
+      }
+
+      Long parkingSpotID = parkingEvent.getParkingSpot().getId();
+      var parkingSpotOptional = parkingSpotRepository.findById(parkingSpotID);
+      if (parkingSpotOptional.isPresent()) {
+        ParkingSpot parkingSpot = parkingSpotOptional.get();
+        parkingSpot.addParkingEvent(parkingEvent);
+        parkingSpotRepository.save(parkingSpot);
+      return parkingEventRepository.save(parkingEvent);
     }
-
-    Long parkingSpotID = parkingEvent.getParkingSpot().getId();
-    var parkingSpotOptional = parkingSpotRepository.findById(parkingSpotID);
-    if (parkingSpotOptional.isPresent()) {
-      ParkingSpot parkingSpot = parkingSpotOptional.get();
-      parkingSpot.addParkingEvent(parkingEvent);
-      parkingSpotRepository.save(parkingSpot);
-    }
-
-    return parkingEventRepository.save(parkingEvent);
-
+      
   }
+    return null;
+  }
+
+  
   
   @GetMapping("/parkingevent")
   public Iterable<ParkingEvent> getAllParkingEvents() {
