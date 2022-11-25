@@ -38,5 +38,9 @@ public class ParkingSpot {
     this.coordinate = coordinate;
   }
   
+  public void addParkingEvent(ParkingEvent parking) {
+    this.parkingEvent.add(parking);
+    parking.setParkingSpot(this);
+  }
 
 }

@@ -28,7 +28,7 @@ public class Car {
   @OneToMany(mappedBy = "car")
   private Set<ParkingEvent> parkingEvent = new HashSet<>();
   
-
+@JsonIgnore
   public Set<ParkingEvent> getParkingEvent() {
     return parkingEvent;
   }
@@ -50,8 +50,14 @@ public class Car {
   public Customer getCustomer() {
     return customer;
   }
+
   public void setCustomer(Customer customer) {
     this.customer = customer;
   }
 
+  public void addParkingEvent(ParkingEvent parking) {
+    this.parkingEvent.add(parking);
+    parking.setCar(this);
+  }
+  
 }

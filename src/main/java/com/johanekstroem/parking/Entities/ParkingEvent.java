@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,9 +30,17 @@ public class ParkingEvent {
 
   private LocalDateTime stoptime;
 
-  private Boolean isOngoing;
+  private Boolean isActive;
   
   
+  public Boolean getIsActive() {
+    return isActive;
+  }
+
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
+  }
+
   @ManyToOne
   private Car car;
 
@@ -69,13 +79,6 @@ public class ParkingEvent {
     this.stoptime = stoptime;
   }
 
-  public Boolean getIsOngoing() {
-    return isOngoing;
-  }
-
-  public void setIsOngoing(Boolean isOngoing) {
-    this.isOngoing = isOngoing;
-  }
 
   public Car getCar() {
     return car;
