@@ -1,9 +1,11 @@
 package com.johanekstroem.parking.Controller;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.johanekstroem.parking.Entities.Car;
 import com.johanekstroem.parking.Entities.ParkingEvent;
@@ -65,8 +68,9 @@ public class ParkingEventController {
   
 
   @PostMapping("/parkingevent")
-  public ParkingEvent startParking(@RequestBody ParkingEvent parkingEvent) {
+  public ResponseEntity<ParkingEvent> startParking(@RequestBody ParkingEvent parkingEvent) {
     var stoptime = parkingEvent.getStoptime();
+    var saveParkingEvent = parkingEventRepository.save(parkingEvent);
 
     if (validateStopTime.isInFuture(stoptime)) {
       Long carID = parkingEvent.getCar().getId();
@@ -83,11 +87,15 @@ public class ParkingEventController {
         ParkingSpot parkingSpot = parkingSpotOptional.get();
         parkingSpot.addParkingEvent(parkingEvent);
         parkingSpotRepository.save(parkingSpot);
-      return parkingEventRepository.save(parkingEvent);
-    }
       
-  }
-    return null;
+         URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand(saveParkingEvent.getId())
+                .toUri();
+                return ResponseEntity.created(location).body(saveParkingEvent);
+              }
+    }
+    return ResponseEntity.badRequest().build();
   }
   
   @GetMapping("/parkingevent")
@@ -96,12 +104,12 @@ public class ParkingEventController {
   }
 
   @GetMapping("/parkingevent/{id}")
-  public Optional<ParkingEvent> getAllParkingEventsByID(@PathVariable("id") Long id) {
+  public ResponseEntity<ParkingEvent> getAllParkingEventsByID(@PathVariable("id") Long id) {
     var parking = parkingEventRepository.findById(id);
     if (parking.isPresent()) {
-      return parking;
+      return ResponseEntity.ok().body(parking.get());
     }
-    return null;
+      return ResponseEntity.notFound().build();
   }
 
    @GetMapping(path = "/parkingevent", params = "filter")
@@ -110,15 +118,23 @@ public class ParkingEventController {
     }
 
     @PatchMapping("/parkingevent/{id}")
-    public ParkingEvent updateStopTime(@PathVariable("id") Long id, @RequestBody ParkingEvent parkingEvent) {
+    public ResponseEntity<Object> updateStopTime(@PathVariable("id") Long id, @RequestBody ParkingEvent parkingEvent) {
       
       var parkingOptional = parkingEventRepository.findById(id);
       LocalDateTime newStopTime = parkingEvent.getStoptime();
-        if (parkingOptional.isPresent() && validateStopTime.isInFuture(newStopTime)) {
+      if (parkingOptional.isPresent() && validateStopTime.isInFuture(newStopTime)) {
         ParkingEvent parking = parkingOptional.get();
+        var updateParkingEvent = parkingEventRepository.save(parking);
         parking.setStoptime(newStopTime);
-        return parkingEventRepository.save(parking);
-      } else
-        return null;
+
+        URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(updateParkingEvent.getId())
+            .toUri();
+
+        return ResponseEntity.created(location).body(updateParkingEvent);
+      }
+      return ResponseEntity.badRequest().build();
     }
 }
