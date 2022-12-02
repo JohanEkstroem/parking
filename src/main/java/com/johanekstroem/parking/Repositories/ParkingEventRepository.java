@@ -9,7 +9,7 @@ import com.johanekstroem.parking.Entities.ParkingEvent;
 
 public interface ParkingEventRepository extends CrudRepository<ParkingEvent, Long> {
    @Query("""
-            SELECT p FROM ParkingEvent p WHERE NOT (p.isActive) = true
+            SELECT p FROM ParkingEvent p WHERE (p.isActive) = true
             """)
     List<ParkingEvent> filterOnActiveParkingEvents();
   }
