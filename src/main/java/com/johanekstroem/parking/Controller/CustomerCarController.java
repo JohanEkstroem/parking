@@ -2,6 +2,9 @@ package com.johanekstroem.parking.Controller;
 
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
+import org.hibernate.engine.spi.Resolution;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,18 +41,16 @@ public class CustomerCarController {
   }
 
   @GetMapping("/customer/{id}")
-  public Optional<Customer> getAllCustomerByID(@PathVariable("id") Long id) {
+  public ResponseEntity<Customer> getAllCustomerByID(@PathVariable("id") Long id) {
     var customer = customerRepository.findById(id);
     if (customer.isPresent()) {
-      return customer;
+      return ResponseEntity.ok().body(customer.get());
     }
-    return null;
+    return ResponseEntity.notFound().build();
   }
 
   @PostMapping("/customer/{id}/car")
   public Customer addCarToCustomer(@PathVariable("id") Long id, @RequestBody Car car) {
-    //TODO:
-    // Find Customer and add car to that specific customer
     Optional<Customer> customerRepo = customerRepository.findById(id);
     if (customerRepo.isPresent()) {
       Customer customer = customerRepo.get();
