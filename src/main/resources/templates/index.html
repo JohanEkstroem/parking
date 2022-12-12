@@ -1,16 +1,16 @@
 <!DOCTYPE>
-    <html lang="en">
+    <html lang="en" xmlns:th="http://www.thymeleaf.org" >
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html" charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startpage</title>
-    <link th:href="@{/index.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="/static/index.css" th:href="@{/index.css}"/>
 </head>
 <body>
 
 <div class="topnav">
-    <a th:href="@{/index}">Startpage</a>
+    <a th:href="@{/}">Home</a>
     <a th:href="@{/login}">Login</a>
 </div>
 
