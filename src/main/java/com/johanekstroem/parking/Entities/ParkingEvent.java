@@ -16,6 +16,18 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class ParkingEvent {
 
+  @Override
+  public String toString() {
+    return "ParkingEvent{" +
+            "created=" + created +
+            ", updated=" + updated +
+            ", stoptime=" + stoptime +
+            ", isActive=" + isActive +
+            ", car=" + car +
+            ", parkingSpot=" + parkingSpot +
+            '}';
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -30,6 +42,15 @@ public class ParkingEvent {
   @Column(nullable = false)
   private LocalDateTime stoptime;
 
+  public ParkingEvent() {
+  }
+
+  public ParkingEvent(LocalDateTime updated, LocalDateTime stoptime, Car car, ParkingSpot parkingSpot) {
+    this.updated = updated;
+    this.stoptime = stoptime;
+    this.car = car;
+    this.parkingSpot = parkingSpot;
+  }
 
   @ColumnDefault("true")
   private Boolean isActive = true;
