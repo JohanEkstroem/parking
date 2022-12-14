@@ -2,6 +2,7 @@ package com.johanekstroem.parking.Controller;
 
 import java.net.URI;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,23 +15,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.johanekstroem.parking.Entities.ParkingSpot;
 import com.johanekstroem.parking.Repositories.ParkingSpotRepository;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("api")
 public class ParkingSpotController {
 
-  public ParkingSpotController(ParkingSpotRepository parkingSpotRepository) {
-    this.parkingSpotRepository = parkingSpotRepository;
-  }
-
   ParkingSpotRepository parkingSpotRepository;
 
-  public ParkingSpotRepository getParkingSpotRepository() {
-    return parkingSpotRepository;
-  }
-
-  public void setParkingSpotRepository(ParkingSpotRepository parkingSpotRepository) {
-    this.parkingSpotRepository = parkingSpotRepository;
-  }
 
   @PostMapping("/parkingspot")
   public ResponseEntity<ParkingSpot> points(@RequestBody ParkingSpot parking) {

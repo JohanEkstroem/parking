@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class PagesController {
 
     @GetMapping("/")
-    public String viewHomePage(Model model){
+    public String viewHomePage(){
         return "index";
     }
 
@@ -31,17 +31,17 @@ public class PagesController {
     }
 
     @GetMapping("/login")
-    public String viewLoginPage(Model model){
+    public String viewLoginPage(){
         return "login";
     }
 
     @GetMapping("/saved")
-    public String viewParkingStarted(Model model){
+    public String viewParkingStarted(){
         return "saved";
     }
 
     @GetMapping("/ops")
-    public String viewParkingNotStarted(Model model){
+    public String viewParkingNotStarted(){
         return "ops";
     }
 

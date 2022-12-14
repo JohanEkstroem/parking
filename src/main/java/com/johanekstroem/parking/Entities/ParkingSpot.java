@@ -2,6 +2,8 @@ package com.johanekstroem.parking.Entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 
@@ -12,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
+@Getter
+@Setter
 public class ParkingSpot {
 
   @Id
@@ -22,22 +26,6 @@ public class ParkingSpot {
   @OneToMany(mappedBy = "parkingSpot")
   private Set<ParkingEvent> parkingEvent = new HashSet<>();
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Point<G2D> getCoordinate() {
-    return coordinate;
-  }
-
-  public void setCoordinate(Point<G2D> coordinate) {
-    this.coordinate = coordinate;
-  }
-  
   public void addParkingEvent(ParkingEvent parking) {
     this.parkingEvent.add(parking);
     parking.setParkingSpot(this);
