@@ -13,8 +13,13 @@ public class PagesController {
     }
 
     @GetMapping("/login")
-    public String viewLoginPage(Model model){
+    public String viewLoginPage(Model model) {
         return "login";
+    }
+
+    @GetMapping("/createuser")
+    public String viewCreateUserPage(Model model) {
+        return "createuser";
     }
 
     @GetMapping("/access-denied")
