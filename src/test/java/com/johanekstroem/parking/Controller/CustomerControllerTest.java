@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.johanekstroem.parking.Entities.Customer;
 import com.johanekstroem.parking.Repositories.CarRepository;
 import com.johanekstroem.parking.Repositories.CustomerRepository;
@@ -44,4 +45,33 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$[0].firstName").value("Haeju"))
                 .andExpect(jsonPath("$[0].id").value("1"));
     }
+
+    @Test
+    void postCustomerShouldCreateCustomer() throws Exception {
+        var customer = new Customer();
+        customer.setFirstName("Elona");
+        customer.setLastName("Muska");
+        customer.setId(1L);
+
+        Mockito.when(customerRepo.save(Mockito.any(Customer.class))).thenReturn(customer);
+
+        System.out.println(customer);
+        mockMvc.perform(post("/api/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(customer))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists());
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(obj);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
