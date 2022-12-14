@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -62,7 +61,7 @@ public class ParkingEventController {
   
 
   @PostMapping("/parkingevent")
-  public ResponseEntity<ParkingEvent> startParking(@ModelAttribute("parkingevent") ParkingEvent parkingEvent) {
+  public Object startParking(@ModelAttribute("parkingevent") ParkingEvent parkingEvent) {
     var stoptime = parkingEvent.getStoptime();
     var saveParkingEvent = parkingEventRepository.save(parkingEvent);
 
@@ -86,10 +85,11 @@ public class ParkingEventController {
                 .fromCurrentRequest()
                 .buildAndExpand(saveParkingEvent.getId())
                 .toUri();
-                return ResponseEntity.created(location).body(saveParkingEvent);
+                return "redirect:/saved";
               }
     }
-    return ResponseEntity.badRequest().build();
+
+    return "redirect:/ops";
   }
   
   @GetMapping("/parkingevent")

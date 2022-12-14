@@ -3,10 +3,10 @@
     text-align: center;
     border-style: solid;
     left: 50%;
-    top: 50%;
+    top: 55%;
     width: 25%;
     transform: translate(-50%, -50%);
-    padding: 20px;
+    padding: 15px;
     border-radius: 5px;
     border-width: 2px;
     border-color: white;
@@ -18,9 +18,9 @@ body {
 }
 
 
-input[type=text], select, textarea {
+input[type=number], select, textarea {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -29,6 +29,17 @@ input[type=text], select, textarea {
     resize: vertical;
     font-size: 18px;
 }
+input[type=datetime-local], select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
 
 input[type=submit] {
     background-color: #04AA6D;
@@ -44,7 +55,7 @@ input[type=submit] {
 h2 {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 600;
 }
 
@@ -73,4 +84,11 @@ body {
 .topnav a:hover {
     background-color: #ddd;
     color: black;
+}
+
+#return_to_homepage{
+    color: blue;
+}
+#return_to_parking{
+    color: blue;
 }

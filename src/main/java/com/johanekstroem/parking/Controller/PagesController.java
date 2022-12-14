@@ -36,6 +36,16 @@ public class PagesController {
         return "login";
     }
 
+    @GetMapping("/saved")
+    public String viewParkingStarted(Model model){
+        return "saved";
+    }
+
+    @GetMapping("/ops")
+    public String viewParkingNotStarted(Model model){
+        return "ops";
+    }
+
     @GetMapping("/access-denied")
     public String accessDenied() {
         return "/error/access-denied";
