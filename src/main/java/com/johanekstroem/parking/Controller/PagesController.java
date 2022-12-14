@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
-
 @Controller
 public class PagesController {
 
@@ -50,5 +49,6 @@ public class PagesController {
     public String accessDenied() {
         return "/error/access-denied";
     }
+
 
 }
