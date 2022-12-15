@@ -87,10 +87,6 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.firstName").value("Elona"))
                 .andExpect(jsonPath("$.id").value("2"));
 
-        // MvcResult result =
-        // mockMvc.perform(get("/api/customer/1").accept(MediaType.APPLICATION_JSON)).andReturn();
-        // String content = result.getResponse().getContentAsString();
-
     }
 
     @Test
@@ -104,7 +100,7 @@ public class CustomerControllerTest {
         car.setRegistrationNumber("Taslaa005");
         car.setId(1L);
 
-        Mockito.when(customerRepo.save(Mockito.any(Customer.class))).thenReturn(customer);
+        Mockito.when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
         Mockito.when(carRepo.save(Mockito.any(Car.class))).thenReturn(car);
 
         mockMvc.perform(post("/api/customer/1/car")
@@ -114,28 +110,6 @@ public class CustomerControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists());
     }
-
-    // public class UserTest {
-
-    // private MockMvc mockMvc;
-    // final String CREATE_USER_URL = "/v1/user/" + "10";
-
-    // private final MediaType contentType = new
-    // MediaType(MediaType.APPLICATION_JSON.getType(),
-    // MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
-
-    // @Test
-    // public void testCreateUser() throws Exception {
-
-    // mockMvc.perform(post(CREATE_USER_URL)
-    // // doesn't work either if I put "/v1/user/10" or post("/v1/user/{id}", 10)
-    // here
-    // .content(TestUtils.toJson(request, false))
-    // .contentType(contentType))
-    // .andDo(print())
-    // .andExpect(status().isCreated())
-    // .andReturn();
-    // }
 
     public static String asJsonString(final Object obj) {
         try {
