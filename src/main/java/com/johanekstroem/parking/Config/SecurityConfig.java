@@ -24,6 +24,7 @@ public class SecurityConfig {
         .requestMatchers("/").anonymous() //Index landing page is open for everyone regardless auth
         .requestMatchers("/login").anonymous()
         .requestMatchers("/createuser").anonymous()
+        .requestMatchers("/handleNewUserForm").anonymous()
         .requestMatchers("/static").anonymous()
         .requestMatchers("/api/**").authenticated()
         .anyRequest().denyAll() // Closes every other end point that's not explicit handled above
