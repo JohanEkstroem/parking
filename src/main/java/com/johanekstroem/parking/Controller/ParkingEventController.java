@@ -4,6 +4,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,47 +18,16 @@ import com.johanekstroem.parking.Repositories.ParkingEventRepository;
 import com.johanekstroem.parking.Repositories.ParkingSpotRepository;
 import com.johanekstroem.parking.Service.ValidateStopTime;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/api")
 public class ParkingEventController {
-
-  public ParkingEventController(CarRepository carRepository, ParkingSpotRepository parkingSpotRepository,
-      ParkingEventRepository parkingEventRepository, ValidateStopTime validateStopTime) {
-    this.carRepository = carRepository;
-    this.parkingSpotRepository = parkingSpotRepository;
-    this.parkingEventRepository = parkingEventRepository;
-    this.validateStopTime = validateStopTime;
-  }
 
 
   CarRepository carRepository;
   ParkingSpotRepository parkingSpotRepository;
   ParkingEventRepository parkingEventRepository;
   ValidateStopTime validateStopTime;
-  
-  public CarRepository getCarRepository() {
-    return carRepository;
-  }
-
-  public void setCarRepository(CarRepository carRepository) {
-    this.carRepository = carRepository;
-  }
-  
-  public ParkingSpotRepository getParkingSpotRepository() {
-    return parkingSpotRepository;
-  }
-  
-  public void setParkingSpotRepository(ParkingSpotRepository parkingSpotRepository) {
-    this.parkingSpotRepository = parkingSpotRepository;
-  }
-
-  public ParkingEventRepository getParkingEventRepository() {
-    return parkingEventRepository;
-  }
-  
-  public void setParkingEventRepository(ParkingEventRepository parkingEventRepository) {
-    this.parkingEventRepository = parkingEventRepository;
-  }
   
 
   @PostMapping("/parkingevent")
@@ -128,43 +98,4 @@ public class ParkingEventController {
       }
       return ResponseEntity.badRequest().build();
     }
-
-/*  @GetMapping("/parkingevent")
-  public String viewParkingPage(Model model){
-    model.addAttribute("parkingevent",parkingEventRepository);
-    return "parkingevent";
-  }*/
-
-
 }
-
- /* @PostMapping("/parkingevent")
-  public ResponseEntity<ParkingEvent> startParking(@RequestBody ParkingEvent parkingEvent) {
-    var stoptime = parkingEvent.getStoptime();
-    var saveParkingEvent = parkingEventRepository.save(parkingEvent);
-
-    if (validateStopTime.isInFuture(stoptime)) {
-      Long carID = parkingEvent.getCar().getId();
-      var carOptional = carRepository.findById(carID);
-      if (carOptional.isPresent()) {
-        Car car = carOptional.get();
-        car.addParkingEvent(parkingEvent);
-        carRepository.save(car);
-      }
-
-      Long parkingSpotID = parkingEvent.getParkingSpot().getId();
-      var parkingSpotOptional = parkingSpotRepository.findById(parkingSpotID);
-      if (parkingSpotOptional.isPresent()) {
-        ParkingSpot parkingSpot = parkingSpotOptional.get();
-        parkingSpot.addParkingEvent(parkingEvent);
-        parkingSpotRepository.save(parkingSpot);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(saveParkingEvent.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(saveParkingEvent);
-      }
-    }
-    return ResponseEntity.badRequest().build();
-  }*/
