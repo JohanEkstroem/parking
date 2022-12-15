@@ -1,6 +1,7 @@
 package com.johanekstroem.parking.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.johanekstroem.parking.Entities.Car;
 import com.johanekstroem.parking.Entities.Customer;
 import com.johanekstroem.parking.Repositories.CarRepository;
 import com.johanekstroem.parking.Repositories.CustomerRepository;
@@ -63,6 +66,76 @@ public class CustomerControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists());
     }
+
+    @Test
+    void getCustomerByIdShouldReturnRightCustomer() throws Exception {
+        var customer = new Customer();
+        customer.setFirstName("Haeju");
+        customer.setLastName("Java");
+        customer.setId(1L);
+
+        var customer2 = new Customer();
+        customer2.setFirstName("Elona");
+        customer2.setLastName("Muska");
+        customer2.setId(2L);
+
+        Mockito.when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
+        Mockito.when(customerRepo.findById(2L)).thenReturn(Optional.of(customer2));
+
+        mockMvc.perform(get("/api/customer/2"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.firstName").value("Elona"))
+                .andExpect(jsonPath("$.id").value("2"));
+
+        // MvcResult result =
+        // mockMvc.perform(get("/api/customer/1").accept(MediaType.APPLICATION_JSON)).andReturn();
+        // String content = result.getResponse().getContentAsString();
+
+    }
+
+    @Test
+    void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
+        var customer = new Customer();
+        customer.setFirstName("Elona");
+        customer.setLastName("Muska");
+        customer.setId(1L);
+
+        var car = new Car();
+        car.setRegistrationNumber("Taslaa005");
+        car.setId(1L);
+
+        Mockito.when(customerRepo.save(Mockito.any(Customer.class))).thenReturn(customer);
+        Mockito.when(carRepo.save(Mockito.any(Car.class))).thenReturn(car);
+
+        mockMvc.perform(post("/api/customer/1/car")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(car))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists());
+    }
+
+    // public class UserTest {
+
+    // private MockMvc mockMvc;
+    // final String CREATE_USER_URL = "/v1/user/" + "10";
+
+    // private final MediaType contentType = new
+    // MediaType(MediaType.APPLICATION_JSON.getType(),
+    // MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+    // @Test
+    // public void testCreateUser() throws Exception {
+
+    // mockMvc.perform(post(CREATE_USER_URL)
+    // // doesn't work either if I put "/v1/user/10" or post("/v1/user/{id}", 10)
+    // here
+    // .content(TestUtils.toJson(request, false))
+    // .contentType(contentType))
+    // .andDo(print())
+    // .andExpect(status().isCreated())
+    // .andReturn();
+    // }
 
     public static String asJsonString(final Object obj) {
         try {
