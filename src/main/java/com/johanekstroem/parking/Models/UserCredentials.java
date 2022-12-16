@@ -1,15 +1,15 @@
 package com.johanekstroem.parking.Models;
 
 public class UserCredentials {
-  private String userName;
+  private String username;
   private String password;
   private String scope;
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
-  public void setUserName(String name) {
-    this.userName = name;
+  public void setUsername(String name) {
+    this.username = name;
   }
   public String getPassword() {
     return password;
@@ -24,6 +24,7 @@ public class UserCredentials {
     this.scope = scope;
   }
   public UserCredentials() {
+    this.scope = "read write";
   }
   
 }
