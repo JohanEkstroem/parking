@@ -1,5 +1,6 @@
 package com.johanekstroem.parking.Controller;
 
+import com.johanekstroem.parking.Entities.Car;
 import com.johanekstroem.parking.Entities.Customer;
 import com.johanekstroem.parking.Entities.ParkingEvent;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,8 @@ public class PagesController {
 
     @GetMapping("/car")
     public String viewCarRegisterPage(Model model) {
-        // I set dummy codes until I can get req body from login page
+        // I set dummy codes until I can get req body from login page to show username
+        // in frontend
         var customer = new Customer();
         customer.setId(1L);
         customer.setFirstName("Haeju");

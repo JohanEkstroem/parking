@@ -1,40 +1,41 @@
 package com.johanekstroem.parking.Controller;
 
 import java.net.URI;
-import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.johanekstroem.parking.Entities.Car;
 import com.johanekstroem.parking.Entities.Customer;
 import com.johanekstroem.parking.Repositories.CarRepository;
 import com.johanekstroem.parking.Repositories.CustomerRepository;
+
 @AllArgsConstructor
-@RestController
+@Controller
 @RequestMapping("api")
 public class CustomerCarController {
-  
+
   CarRepository carRepository;
   CustomerRepository customerRepository;
-  
+
   @PostMapping("/customer")
   public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
     var newCustomer = customerRepository.save(customer);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(newCustomer.getId())
-                .toUri();
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .buildAndExpand(newCustomer.getId())
+        .toUri();
 
-        return ResponseEntity.created(location).body(newCustomer);
+    return ResponseEntity.created(location).body(newCustomer);
   }
 
   @GetMapping("/customer")
@@ -52,10 +53,14 @@ public class CustomerCarController {
   }
 
   @PostMapping("/customer/{id}/car")
-  public ResponseEntity<Optional<Customer>> addCarToCustomer(@PathVariable("id") Long id, @RequestBody Car car) {
+  public Object addCarToCustomer(@PathVariable("id") Long id, @RequestParam(name = "carNum") String customerCar) {
+
     var customerByID = customerRepository.findById(id);
+
     if (customerByID.isPresent()) {
       Customer customer = customerByID.get();
+      Car car = new Car();
+      car.setRegistrationNumber(customerCar);
       customer.addCar(car);
       carRepository.save(car);
 
@@ -65,18 +70,18 @@ public class CustomerCarController {
           .buildAndExpand(customer.getId())
           .toUri();
 
-      return ResponseEntity.created(location).body(customerByID);
+      ResponseEntity.created(location).body(customerByID);
+      return "redirect:/saved";
+
     }
-    return ResponseEntity.notFound().build();
+    return "redirect:/ops";
   }
-  
 
   @GetMapping("/cars")
   public Iterable<Car> getAllCars() {
     return carRepository.findAll();
   }
 
-  
   @GetMapping("/cars/{id}")
   public ResponseEntity<Car> getAllCarsByID(@PathVariable("id") Long id) {
     var car = carRepository.findById(id);
