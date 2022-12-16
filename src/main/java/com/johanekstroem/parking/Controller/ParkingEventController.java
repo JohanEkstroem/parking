@@ -3,17 +3,11 @@ package com.johanekstroem.parking.Controller;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.johanekstroem.parking.Entities.Car;
@@ -24,17 +18,10 @@ import com.johanekstroem.parking.Repositories.ParkingEventRepository;
 import com.johanekstroem.parking.Repositories.ParkingSpotRepository;
 import com.johanekstroem.parking.Service.ValidateStopTime;
 
-@RestController
-@RequestMapping("api")
+@AllArgsConstructor
+@Controller
+@RequestMapping("/api")
 public class ParkingEventController {
-
-  public ParkingEventController(CarRepository carRepository, ParkingSpotRepository parkingSpotRepository,
-      ParkingEventRepository parkingEventRepository, ValidateStopTime validateStopTime) {
-    this.carRepository = carRepository;
-    this.parkingSpotRepository = parkingSpotRepository;
-    this.parkingEventRepository = parkingEventRepository;
-    this.validateStopTime = validateStopTime;
-  }
 
 
   CarRepository carRepository;
@@ -42,33 +29,9 @@ public class ParkingEventController {
   ParkingEventRepository parkingEventRepository;
   ValidateStopTime validateStopTime;
   
-  public CarRepository getCarRepository() {
-    return carRepository;
-  }
-
-  public void setCarRepository(CarRepository carRepository) {
-    this.carRepository = carRepository;
-  }
-  
-  public ParkingSpotRepository getParkingSpotRepository() {
-    return parkingSpotRepository;
-  }
-  
-  public void setParkingSpotRepository(ParkingSpotRepository parkingSpotRepository) {
-    this.parkingSpotRepository = parkingSpotRepository;
-  }
-
-  public ParkingEventRepository getParkingEventRepository() {
-    return parkingEventRepository;
-  }
-  
-  public void setParkingEventRepository(ParkingEventRepository parkingEventRepository) {
-    this.parkingEventRepository = parkingEventRepository;
-  }
-  
 
   @PostMapping("/parkingevent")
-  public ResponseEntity<ParkingEvent> startParking(@RequestBody ParkingEvent parkingEvent) {
+  public Object startParking(@ModelAttribute("parkingevent") ParkingEvent parkingEvent) {
     var stoptime = parkingEvent.getStoptime();
     var saveParkingEvent = parkingEventRepository.save(parkingEvent);
 
@@ -92,10 +55,11 @@ public class ParkingEventController {
                 .fromCurrentRequest()
                 .buildAndExpand(saveParkingEvent.getId())
                 .toUri();
-                return ResponseEntity.created(location).body(saveParkingEvent);
+                return "redirect:/saved";
               }
     }
-    return ResponseEntity.badRequest().build();
+
+    return "redirect:/ops";
   }
   
   @GetMapping("/parkingevent")
@@ -106,10 +70,7 @@ public class ParkingEventController {
   @GetMapping("/parkingevent/{id}")
   public ResponseEntity<ParkingEvent> getAllParkingEventsByID(@PathVariable("id") Long id) {
     var parking = parkingEventRepository.findById(id);
-    if (parking.isPresent()) {
-      return ResponseEntity.ok().body(parking.get());
-    }
-      return ResponseEntity.notFound().build();
+    return parking.map(parkingEvent -> ResponseEntity.ok().body(parkingEvent)).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
    @GetMapping(path = "/parkingevent", params = "filter")

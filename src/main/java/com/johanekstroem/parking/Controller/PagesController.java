@@ -12,32 +12,61 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import com.johanekstroem.parking.Entities.ParkingEvent;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.johanekstroem.parking.Models.UserCredentials;
+
 
 @Controller
 public class PagesController {
-    @Autowired
-    RestTemplate restTemplate;
+
     @GetMapping("/")
-    public String viewHomePage(Model model){
+    public String viewHomePage(){
         return "index";
     }
 
+    @RequestMapping(value = "/parking", method = RequestMethod.POST)
+    public String createParking(@ModelAttribute ParkingEvent parkingevent) {
+        return ResponseEntity.ok().toString();
+
+    }
+
+    @GetMapping("/parking")
+    public String viewParkingPage(Model model) {
+        model.addAttribute("parkingEvent", new ParkingEvent());
+        return "parkingevent";
+    }
+
+ @RequestMapping(value = "/parking", method = RequestMethod.POST)
+    public String createParking(@ModelAttribute ParkingEvent parkingevent){
+       return ResponseEntity.ok().toString();
+
+    }
+    @GetMapping ("/parking")
+    public String viewParkingPage(Model model){
+        model.addAttribute("parkingEvent",new ParkingEvent());
+        return "parkingevent";
+    }
+
     @GetMapping("/login")
-    public String viewLoginPage(Model model) {
+    public String viewLoginPage(){
         return "login";
     }
 
-    @GetMapping("/createuser")
-    public String viewCreateUserPage(Model model) {
-        model.addAttribute("UserCredentials", new UserCredentials());
-        return "createuser";
+    @GetMapping("/saved")
+    public String viewParkingStarted(){
+        return "saved";
+    }
+
+    @GetMapping("/ops")
+    public String viewParkingNotStarted(){
+        return "ops";
     }
 
     @GetMapping("/access-denied")
@@ -45,6 +74,5 @@ public class PagesController {
         return "/error/access-denied";
     }
 
- 
 
 }

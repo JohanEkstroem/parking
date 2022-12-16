@@ -3,6 +3,7 @@ package com.johanekstroem.parking.Controller;
 import java.net.URI;
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,18 +17,13 @@ import com.johanekstroem.parking.Entities.Car;
 import com.johanekstroem.parking.Entities.Customer;
 import com.johanekstroem.parking.Repositories.CarRepository;
 import com.johanekstroem.parking.Repositories.CustomerRepository;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping("api")
 public class CustomerCarController {
   
   CarRepository carRepository;
   CustomerRepository customerRepository;
-
-  public CustomerCarController(CarRepository carRepository, CustomerRepository customerRepository){
-    this.carRepository = carRepository;
-    this.customerRepository = customerRepository;
-  }  
   
   @PostMapping("/customer")
   public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {

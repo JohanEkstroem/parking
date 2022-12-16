@@ -12,8 +12,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Car {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,28 +35,6 @@ public class Car {
 @JsonIgnore
   public Set<ParkingEvent> getParkingEvent() {
     return parkingEvent;
-  }
-  public void setParkingEvent(Set<ParkingEvent> parkingEvent) {
-    this.parkingEvent = parkingEvent;
-  }
-  public Long getId() {
-    return id;
-  }
-  public void setId(Long id) {
-    this.id = id;
-  }
-  public String getRegistrationNumber() {
-    return registrationNumber;
-  }
-  public void setRegistrationNumber(String registrationNumber) {
-    this.registrationNumber = registrationNumber;
-  }
-  public Customer getCustomer() {
-    return customer;
-  }
-
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
   }
 
   public void addParkingEvent(ParkingEvent parking) {
