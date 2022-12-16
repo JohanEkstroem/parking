@@ -1,17 +1,5 @@
 package com.johanekstroem.parking.Controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import com.johanekstroem.parking.Entities.ParkingEvent;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,18 +17,6 @@ public class PagesController {
     @GetMapping("/")
     public String viewHomePage(){
         return "index";
-    }
-
-    @RequestMapping(value = "/parking", method = RequestMethod.POST)
-    public String createParking(@ModelAttribute ParkingEvent parkingevent) {
-        return ResponseEntity.ok().toString();
-
-    }
-
-    @GetMapping("/parking")
-    public String viewParkingPage(Model model) {
-        model.addAttribute("parkingEvent", new ParkingEvent());
-        return "parkingevent";
     }
 
  @RequestMapping(value = "/parking", method = RequestMethod.POST)
@@ -74,5 +50,9 @@ public class PagesController {
         return "/error/access-denied";
     }
 
+    @GetMapping("/createuser")
+    public String createNewUserForm() {
+        return "/createuser";
+    }
 
 }
