@@ -1,0 +1,34 @@
+<!DOCTYPE >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="content-type" content="text/html" charset="ISO-8859-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parking Event</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="/form.css"
+      th:href="@{/form.css}"
+    />
+  </head>
+  <body>
+    <div class="topnav">
+      <a th:href="@{/}">Home</a>
+      <a th:href="@{/login}">Login</a>
+    </div>
+    <div class="container">
+      <h2>Register your car</h2>
+      <form method="post" th:object="${customerCar}">
+        <div th:object="${customer}" th:action="@{/api/customer/*{id}/car}">
+          <h2 th:text="*{firstName}"></h2>
+        </div>
+        <label>
+          <input type="text" placeholder="Car Number" />
+        </label>
+        <br /><br />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </body>
+</html>
