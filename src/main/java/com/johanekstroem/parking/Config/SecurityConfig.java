@@ -16,16 +16,17 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
         .csrf().disable()
-        .cors().disable() //Allow requests from foreign domains
+        .cors().disable()//Allow requests from foreign domains
         .formLogin().disable()
         .logout().disable()
         .sessionManagement().disable() //Disable session cookies.
         .authorizeHttpRequests()
         .requestMatchers("/").anonymous() //Index landing page is open for everyone regardless auth
+        .requestMatchers("/*").anonymous()
         .requestMatchers("/login").anonymous()
         .requestMatchers("/createuser").anonymous()
         .requestMatchers("/handleNewUserForm").anonymous()
-        .requestMatchers("/static").anonymous()
+        .requestMatchers("/js/*").anonymous()
         .requestMatchers("/api/**").authenticated()
         .anyRequest().denyAll() // Closes every other end point that's not explicit handled above
         .and()
