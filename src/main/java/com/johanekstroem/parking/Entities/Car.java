@@ -28,14 +28,11 @@ public class Car {
   @ManyToOne
   @JsonIgnore
   private Customer customer;
-  
+
+  @JsonIgnore
   @OneToMany(mappedBy = "car")
   private Set<ParkingEvent> parkingEvent = new HashSet<>();
-  
-@JsonIgnore
-  public Set<ParkingEvent> getParkingEvent() {
-    return parkingEvent;
-  }
+
 
   public void addParkingEvent(ParkingEvent parking) {
     this.parkingEvent.add(parking);
