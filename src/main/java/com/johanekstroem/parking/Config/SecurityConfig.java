@@ -16,7 +16,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
         .csrf().disable()
-        .cors().disable()//Allow requests from foreign domains
+        .cors().disable() //Allow requests from foreign domains
         .formLogin().disable()
         .logout().disable()
         .sessionManagement().disable() //Disable session cookies.
