@@ -30,7 +30,6 @@ class ParkingEventServiceTest {
     CarRepository carRepository = mock(CarRepository.class);
     ParkingSpotRepository parkingSpotRepository = mock(ParkingSpotRepository.class);
     this.parkingEventRepository = mock(ParkingEventRepository.class);
-
     this.parkingEventService = new ParkingEventServiceImp(carRepository, parkingSpotRepository,parkingEventRepository);
 
     }
@@ -74,9 +73,6 @@ class ParkingEventServiceTest {
   Assertions.assertEquals(1L, result1.get().getId().longValue());
 
   }
-
-
-
 
   @Test
   void updateStopTime() {
