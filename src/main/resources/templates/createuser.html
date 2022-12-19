@@ -20,15 +20,16 @@
     <div th:remove="tag">
       <div class="row bg-black">
         <div class="col-md-6 col-md-offset-3">
-          <form>
+          <form th:action="@{/api/createuser}" method="POST" th:object="${UserCredentials}">
             <div class="form-group">
               <label for="username"></label>
               <input type="text" id="username" name="username" class="form-control" autofocus="autofocus"
-                placeholder="Username">
+                placeholder="Username" th:field="*{username}">
             </div>
             <div class="form-group">
               <label for="password"></label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+              <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                th:field="*{password}">
             </div>
             <div class="form-group">
               <div class="row">
@@ -44,7 +45,6 @@
     </div>
     <p><a href="/" th:href="@{/}">Back to home page</a></p>
   </div>
-  <script src="/js/submitNewUser.js"></script>
 </body>
 
 </html>

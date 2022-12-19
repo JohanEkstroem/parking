@@ -1,6 +1,8 @@
 package com.johanekstroem.parking.Controller;
 
 import com.johanekstroem.parking.Entities.ParkingEvent;
+import com.johanekstroem.parking.Models.UserCredentials;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,8 +53,9 @@ public class PagesController {
     }
 
     @GetMapping("/createuser")
-    public String createNewUserForm() {
-        return "/createuser";
+    public String createNewUserForm(Model model) {
+        model.addAttribute("UserCredentials", new UserCredentials());
+        return "createuser";
     }
 
 }
