@@ -45,6 +45,7 @@ public class ParkingEvent {
   @ManyToOne
   private ParkingSpot parkingSpot;
 
+
   @Override
   public String toString() {
     return "ParkingEvent{" +

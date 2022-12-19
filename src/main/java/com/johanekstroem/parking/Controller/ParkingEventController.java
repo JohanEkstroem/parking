@@ -32,7 +32,7 @@ ParkingEventService parkingEventService;
   @GetMapping("/parkingevent/{ParkingEventId}")
   @ResponseBody
   public ResponseEntity<ParkingEvent> getAllParkingEventsByID(@PathVariable Long ParkingEventId) {
-    var result= parkingEventService.getAllParkingEventsByID(ParkingEventId);
+    var result= parkingEventService.getOneParkingEventByID(ParkingEventId);
     return result.map(parkingEvent -> ResponseEntity.ok().body(parkingEvent)).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
@@ -57,10 +57,10 @@ ParkingEventService parkingEventService;
       URI location = ServletUriComponentsBuilder
               .fromCurrentRequest()
               .path("/{id}")
-              .buildAndExpand(parkingEventService.getAllParkingEventsByID(ParkingEventId))
+              .buildAndExpand(parkingEventService.getOneParkingEventByID(ParkingEventId))
               .toUri();
 
-        return ResponseEntity.created(location).body(parkingEventService.getAllParkingEventsByID(ParkingEventId));
+        return ResponseEntity.created(location).body(parkingEventService.getOneParkingEventByID(ParkingEventId));
       }
       return ResponseEntity.badRequest().build();
     }
