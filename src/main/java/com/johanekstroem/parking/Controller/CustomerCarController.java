@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.johanekstroem.parking.Entities.Car;
@@ -18,9 +19,11 @@ import com.johanekstroem.parking.Entities.Customer;
 import com.johanekstroem.parking.Repositories.CarRepository;
 import com.johanekstroem.parking.Repositories.CustomerRepository;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @AllArgsConstructor
-@Controller
-@RequestMapping("api")
+@RestController
+@RequestMapping("/api")
 public class CustomerCarController {
 
   CarRepository carRepository;
@@ -53,14 +56,15 @@ public class CustomerCarController {
   }
 
   @PostMapping("/customer/{id}/car")
-  public Object addCarToCustomer(@PathVariable("id") Long id, @RequestParam(name = "carNum") String customerCar) {
+  public Object addCarToCustomer(@PathVariable("id") Long id, HttpServletResponse httpResponse,
+      @RequestBody Car customerCar) throws Exception {
 
     var customerByID = customerRepository.findById(id);
 
     if (customerByID.isPresent()) {
       Customer customer = customerByID.get();
       Car car = new Car();
-      car.setRegistrationNumber(customerCar);
+      car.setRegistrationNumber(customerCar.getRegistrationNumber());
       customer.addCar(car);
       carRepository.save(car);
 
@@ -70,11 +74,12 @@ public class CustomerCarController {
           .buildAndExpand(customer.getId())
           .toUri();
 
-      ResponseEntity.created(location).body(customerByID);
-      return "redirect:/saved";
+      httpResponse.sendRedirect("/saved");
+      return ResponseEntity.created(location).body(customerByID);
 
     }
-    return "redirect:/ops";
+    httpResponse.sendRedirect("/ops");
+    return null;
   }
 
   @GetMapping("/cars")

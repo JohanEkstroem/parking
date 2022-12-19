@@ -12,7 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.johanekstroem.parking.Entities.Car;
@@ -106,9 +107,10 @@ public class CustomerControllerTest {
         mockMvc.perform(post("/api/customer/1/car")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(car))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
+                .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.cars[0].registrationNumber").exists())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/saved"));
+
     }
 
     public static String asJsonString(final Object obj) {
