@@ -31,6 +31,12 @@ public class PagesController {
         return "parkingevent";
     }
 
+    @RequestMapping(value = "/car", method = RequestMethod.POST)
+    public String createParking(@ModelAttribute Car car) {
+        return ResponseEntity.ok().toString();
+
+    }
+
     @GetMapping("/car")
     public String viewCarRegisterPage(Model model) {
         // I set dummy codes until I can get req body from login page to show username
@@ -40,7 +46,10 @@ public class PagesController {
         customer.setFirstName("Haeju");
         customer.setLastName("Dummy");
 
-        model.addAttribute("customer", customer);
+        var car = new Car();
+        car.setId(customer.getId());
+
+        model.addAttribute("car", car);
         return "carregister";
     }
 

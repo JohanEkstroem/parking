@@ -91,7 +91,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
+    void postCustomerCarToCustomerShouldCreateCustomersCarAndRedirect() throws Exception {
         var customer = new Customer();
         customer.setFirstName("Elona");
         customer.setLastName("Muska");
@@ -106,7 +106,7 @@ public class CustomerControllerTest {
 
         mockMvc.perform(post("/api/customer/1/car")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(car))
+                .flashAttr("car", car)
                 .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.cars[0].registrationNumber").exists())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/saved"));

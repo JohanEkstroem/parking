@@ -21,14 +21,16 @@
       <h2>Register your car</h2>
       <form
         method="post"
-        th:object="${customer}"
+        th:object="${car}"
         th:action="@{/api/customer/__*{id}__/car}"
       >
-        <div>
-          <h2 th:text="*{firstName}"></h2>
-        </div>
         <label>
-          <input type="text" placeholder="Car Number" name="carNum" />
+          <input
+            type="text"
+            placeholder="Car Number"
+            th:field="*{registrationNumber}"
+          />
+          />
         </label>
         <br /><br />
         <input type="submit" value="Submit" />
