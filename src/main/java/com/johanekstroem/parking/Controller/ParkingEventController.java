@@ -1,9 +1,7 @@
 package com.johanekstroem.parking.Controller;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
-
 
 import com.johanekstroem.parking.Service.ParkingEventService;
 import lombok.AllArgsConstructor;
@@ -14,67 +12,55 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import com.johanekstroem.parking.Entities.ParkingEvent;
-import com.johanekstroem.parking.Repositories.ParkingEventRepository;
-import com.johanekstroem.parking.Service.ValidateStopTime;
+
 
 @AllArgsConstructor
 @Controller
 @RequestMapping("/api")
 public class ParkingEventController {
 
-ValidateStopTime validateStopTime;
+
 ParkingEventService parkingEventService;
-ParkingEventRepository parkingEventRepository;
-
-  
-
-  @PostMapping("/parkingevent")
-  public Object startParking(@ModelAttribute("parkingevent") ParkingEvent parkingEvent) {
-    if (ParkingEventService.isParkingtimeOk(parkingEvent)) {
-      ParkingEventService.saveParkingEvent(parkingEvent);
-      parkingEventRepository.save(parkingEvent);
-
-      return "redirect:/saved";
-    }
-
-    return "redirect:/ops";
-  }
-
 
 
   @GetMapping("/parkingevent")
-  public Iterable<ParkingEvent> getAllParkingEvents() {
-    return parkingEventRepository.findAll();
+  @ResponseBody
+  public List<ParkingEvent> getAllParkingEvents() {
+    return parkingEventService.getAllParkingEvents();
   }
 
-  @GetMapping("/parkingevent/{id}")
-  public ResponseEntity<ParkingEvent> getAllParkingEventsByID(@PathVariable("id") Long id) {
-    var parking = parkingEventRepository.findById(id);
-    return parking.map(parkingEvent -> ResponseEntity.ok().body(parkingEvent)).orElseGet(() -> ResponseEntity.notFound().build());
+  @GetMapping("/parkingevent/{ParkingEventId}")
+  @ResponseBody
+  public ResponseEntity<ParkingEvent> getAllParkingEventsByID(@PathVariable Long ParkingEventId) {
+    var result= parkingEventService.getAllParkingEventsByID(ParkingEventId);
+    return result.map(parkingEvent -> ResponseEntity.ok().body(parkingEvent)).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-   @GetMapping(path = "/parkingevent", params = "filter")
-    public List<ParkingEvent> filterActiveParkings(@RequestParam String filter) {
-        return parkingEventRepository.filterOnActiveParkingEvents();
+  @PostMapping("/parkingevent")
+  public Object startParking(@ModelAttribute("parkingevent") ParkingEvent parkingEvent) {
+    if(parkingEventService.startParking(parkingEvent)){
+      return "redirect:/saved";
+    }else return "redirect:/ops";}
+
+
+   @GetMapping(path = "/parkingevent/cars/{carId}/{isActive}")
+   @ResponseBody
+    public List<ParkingEvent> filterActiveParkings(@PathVariable Long carId, @PathVariable Boolean isActive) {
+     return parkingEventService.filterOnActiveParkingEvents(carId, isActive);
     }
 
-    @PatchMapping("/parkingevent/{id}")
-    public ResponseEntity<Object> updateStopTime(@PathVariable("id") Long id, @RequestBody ParkingEvent parkingEvent) {
-      
-      var parkingOptional = parkingEventRepository.findById(id);
-      LocalDateTime newStopTime = parkingEvent.getStoptime();
-      if (parkingOptional.isPresent() && validateStopTime.isInFuture(newStopTime)) {
-        ParkingEvent parking = parkingOptional.get();
-        var updateParkingEvent = parkingEventRepository.save(parking);
-        parking.setStoptime(newStopTime);
+    @PatchMapping("/parkingevent/{ParkingEventId}")
+    @ResponseBody
+    public ResponseEntity<Object> updateStopTime(@PathVariable Long ParkingEventId, @RequestBody ParkingEvent parkingEvent) {
+    if(parkingEventService.updateStopTime(ParkingEventId, parkingEvent)){
 
-        URI location = ServletUriComponentsBuilder
-            .fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(updateParkingEvent.getId())
-            .toUri();
+      URI location = ServletUriComponentsBuilder
+              .fromCurrentRequest()
+              .path("/{id}")
+              .buildAndExpand(parkingEventService.getAllParkingEventsByID(ParkingEventId))
+              .toUri();
 
-        return ResponseEntity.created(location).body(updateParkingEvent);
+        return ResponseEntity.created(location).body(parkingEventService.getAllParkingEventsByID(ParkingEventId));
       }
       return ResponseEntity.badRequest().build();
     }
