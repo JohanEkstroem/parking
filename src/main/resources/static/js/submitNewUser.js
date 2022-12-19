@@ -1,4 +1,4 @@
-const username = document.getElementById('username');
+/* const username = document.getElementById('username');
 const password = document.getElementById('password');
 const signupURl = 'https://fungover.org/sign-up';
 const submitButton = document.querySelector('#login-submit');
@@ -28,3 +28,4 @@ const postNewUser = async (url) => {
     console.log(e);
   }
 };
+ */
