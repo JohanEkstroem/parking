@@ -1,7 +1,6 @@
 package com.johanekstroem.parking.Controller;
 
 import java.net.URI;
-import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
 
 import com.johanekstroem.parking.Entities.Car;
 import com.johanekstroem.parking.Entities.Customer;
@@ -52,10 +53,20 @@ public class CustomerCarController {
   }
 
   @PostMapping("/customer/{id}/car")
-  public ResponseEntity<Optional<Customer>> addCarToCustomer(@PathVariable("id") Long id, @RequestBody Car car) {
+  public Object addCarToCustomer(@PathVariable("id") Long id, @RequestBody Car userCar) throws Exception {
+
+    var dummyCustomer = new Customer();
+    dummyCustomer.setFirstName("Elona");
+    dummyCustomer.setLastName("Muska");
+    dummyCustomer.setId(1L);
+    customerRepository.save(dummyCustomer);
+
     var customerByID = customerRepository.findById(id);
+
     if (customerByID.isPresent()) {
       Customer customer = customerByID.get();
+      Car car = new Car();
+      car.setRegistrationNumber(userCar.getRegistrationNumber());
       customer.addCar(car);
       carRepository.save(car);
 
@@ -65,9 +76,13 @@ public class CustomerCarController {
           .buildAndExpand(customer.getId())
           .toUri();
 
-      return ResponseEntity.created(location).body(customerByID);
+      // httpResponse.sendRedirect("/saved");
+      ResponseEntity.created(location).body(customerByID);
+      return new ResponseEntity<>("hello", HttpStatus.OK);
+
     }
-    return ResponseEntity.notFound().build();
+    // httpResponse.sendRedirect("/ops");
+    return null;
   }
   
 

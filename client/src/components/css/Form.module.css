@@ -1,0 +1,73 @@
+.container {
+  position: absolute;
+  text-align: center;
+  border-style: solid;
+  left: 50%;
+  top: 55%;
+  width: 25%;
+  transform: translate(-50%, -50%);
+  padding: 15px;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: white;
+  background-color: #263238;
+}
+
+body {
+  background: #263238;
+}
+
+input[type='number'],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+  font-size: 18px;
+}
+input[type='datetime-local'],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+input[type='submit'] {
+  background-color: #04aa6d;
+  width: 100%;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+h2 {
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+input[type='submit']:hover {
+  background-color: red;
+}
+
+#returnToParking {
+  color: blue;
+}
+#returnToParking {
+  color: blue;
+}
