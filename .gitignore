@@ -33,3 +33,4 @@ build/
 .vscode/
 notes.txt
 .env
+/src/main/resources/static
