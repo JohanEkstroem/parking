@@ -88,29 +88,29 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.id").value("2"));
 
     }
-
-    @Test
+    
+   /*  @Test
     void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
         var customer = new Customer();
         customer.setFirstName("Elona");
         customer.setLastName("Muska");
         customer.setId(1L);
-
+    
         var car = new Car();
         car.setRegistrationNumber("Taslaa005");
         car.setId(1L);
-
+    
         Mockito.when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
         Mockito.when(carRepo.save(Mockito.any(Car.class))).thenReturn(car);
-
+    
         mockMvc.perform(post("/api/customer/1/car")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(car))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists());
-    }
-
+    } */
+    
     public static String asJsonString(final Object obj) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
@@ -120,5 +120,6 @@ public class CustomerControllerTest {
             throw new RuntimeException(e);
         }
     }
+   
 
 }
