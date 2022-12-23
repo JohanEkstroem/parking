@@ -1,22 +1,18 @@
 package com.johanekstroem.parking.Controller;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
+import com.johanekstroem.parking.Service.ParkingEventService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.johanekstroem.parking.Entities.Car;
+
 import com.johanekstroem.parking.Entities.ParkingEvent;
-import com.johanekstroem.parking.Entities.ParkingSpot;
-import com.johanekstroem.parking.Repositories.CarRepository;
-import com.johanekstroem.parking.Repositories.ParkingEventRepository;
-import com.johanekstroem.parking.Repositories.ParkingSpotRepository;
-import com.johanekstroem.parking.Service.ValidateStopTime;
+
 
 @AllArgsConstructor
 @Controller
@@ -24,77 +20,47 @@ import com.johanekstroem.parking.Service.ValidateStopTime;
 public class ParkingEventController {
 
 
-  CarRepository carRepository;
-  ParkingSpotRepository parkingSpotRepository;
-  ParkingEventRepository parkingEventRepository;
-  ValidateStopTime validateStopTime;
-  
+ParkingEventService parkingEventService;
+
+
+  @GetMapping("/parkingevent")
+  @ResponseBody
+  public List<ParkingEvent> getAllParkingEvents() {
+    return parkingEventService.getAllParkingEvents();
+  }
+
+  @GetMapping("/parkingevent/{ParkingEventId}")
+  @ResponseBody
+  public ResponseEntity<ParkingEvent> getAllParkingEventsByID(@PathVariable Long ParkingEventId) {
+    var result= parkingEventService.getOneParkingEventByID(ParkingEventId);
+    return result.map(parkingEvent -> ResponseEntity.ok().body(parkingEvent)).orElseGet(() -> ResponseEntity.notFound().build());
+  }
 
   @PostMapping("/parkingevent")
   public Object startParking(@ModelAttribute("parkingevent") ParkingEvent parkingEvent) {
-    var stoptime = parkingEvent.getStoptime();
-    var saveParkingEvent = parkingEventRepository.save(parkingEvent);
+    if(parkingEventService.startParking(parkingEvent)){
+      return "redirect:/saved";
+    }else return "redirect:/ops";}
 
-    if (validateStopTime.isInFuture(stoptime)) {
-      Long carID = parkingEvent.getCar().getId();
-      var carOptional = carRepository.findById(carID);
-      if (carOptional.isPresent()) {
-        Car car = carOptional.get();
-        car.addParkingEvent(parkingEvent);
-        carRepository.save(car);
-      }
 
-      Long parkingSpotID = parkingEvent.getParkingSpot().getId();
-      var parkingSpotOptional = parkingSpotRepository.findById(parkingSpotID);
-      if (parkingSpotOptional.isPresent()) {
-        ParkingSpot parkingSpot = parkingSpotOptional.get();
-        parkingSpot.addParkingEvent(parkingEvent);
-        parkingSpotRepository.save(parkingSpot);
-      
-         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(saveParkingEvent.getId())
-                .toUri();
-                return "redirect:/saved";
-              }
+   @GetMapping(path = "/parkingevent/cars/{carId}/{isActive}")
+   @ResponseBody
+    public List<ParkingEvent> filterActiveParkings(@PathVariable Long carId, @PathVariable Boolean isActive) {
+     return parkingEventService.filterOnActiveParkingEvents(carId, isActive);
     }
 
-    return "redirect:/ops";
-  }
-  
-  @GetMapping("/parkingevent")
-  public Iterable<ParkingEvent> getAllParkingEvents() {
-    return parkingEventRepository.findAll();
-  }
+    @PatchMapping("/parkingevent/{ParkingEventId}")
+    @ResponseBody
+    public ResponseEntity<Object> updateStopTime(@PathVariable Long ParkingEventId, @RequestBody ParkingEvent parkingEvent) {
+    if(parkingEventService.updateStopTime(ParkingEventId, parkingEvent)){
 
-  @GetMapping("/parkingevent/{id}")
-  public ResponseEntity<ParkingEvent> getAllParkingEventsByID(@PathVariable("id") Long id) {
-    var parking = parkingEventRepository.findById(id);
-    return parking.map(parkingEvent -> ResponseEntity.ok().body(parkingEvent)).orElseGet(() -> ResponseEntity.notFound().build());
-  }
+      URI location = ServletUriComponentsBuilder
+              .fromCurrentRequest()
+              .path("/{id}")
+              .buildAndExpand(parkingEventService.getOneParkingEventByID(ParkingEventId))
+              .toUri();
 
-   @GetMapping(path = "/parkingevent", params = "filter")
-    public List<ParkingEvent> filterActiveParkings(@RequestParam String filter) {
-        return parkingEventRepository.filterOnActiveParkingEvents();
-    }
-
-    @PatchMapping("/parkingevent/{id}")
-    public ResponseEntity<Object> updateStopTime(@PathVariable("id") Long id, @RequestBody ParkingEvent parkingEvent) {
-      
-      var parkingOptional = parkingEventRepository.findById(id);
-      LocalDateTime newStopTime = parkingEvent.getStoptime();
-      if (parkingOptional.isPresent() && validateStopTime.isInFuture(newStopTime)) {
-        ParkingEvent parking = parkingOptional.get();
-        var updateParkingEvent = parkingEventRepository.save(parking);
-        parking.setStoptime(newStopTime);
-
-        URI location = ServletUriComponentsBuilder
-            .fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(updateParkingEvent.getId())
-            .toUri();
-
-        return ResponseEntity.created(location).body(updateParkingEvent);
+        return ResponseEntity.created(location).body(parkingEventService.getOneParkingEventByID(ParkingEventId));
       }
       return ResponseEntity.badRequest().build();
     }
