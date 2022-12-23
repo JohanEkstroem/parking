@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.johanekstroem.parking.Entities.Car;
@@ -89,7 +90,7 @@ public class CustomerControllerTest {
 
     }
     
-   /*  @Test
+    @Test
     void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
         var customer = new Customer();
         customer.setFirstName("Elona");
@@ -107,9 +108,8 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(car))
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
-    } */
+                .andExpect(status().isCreated());
+    } 
     
     public static String asJsonString(final Object obj) {
         try {
