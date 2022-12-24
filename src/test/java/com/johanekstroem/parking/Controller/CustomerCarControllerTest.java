@@ -4,29 +4,45 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import com.johanekstroem.parking.Entities.Car;
 import com.johanekstroem.parking.Repositories.CarRepository;
-import static org.assertj.core.api.Assertions.*;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 public class CustomerCarControllerTest {
+
+  @MockBean
+  CarRepository carRepo;
+
+  @Autowired
+  private MockMvc mockMvc;
+
   @Test
-  void testGetAllCars() {
-    CarRepository repo = Mockito.mock(CarRepository.class);
-    Car car = new Car();
-    car.setRegistrationNumber("ABC123");
-    Mockito.when(repo.findAll()).thenReturn(List.of(car));
-
-    CustomerCarController carController = new CustomerCarController(repo, null);
-    
-    var result = carController.getAllCars();
-
-    assertThat(result).hasSize(1);
+  void getCarsReturnStatus200OK() throws Exception {
+    mockMvc.perform(get("/api/cars"))
+        .andExpect(status().isOk());
   }
 
   @Test
-  void testGetAllCustomers() {
+  void getAllCarsShouldReturnListOfCars() throws Exception {
+    Car car = new Car();
+    car.setRegistrationNumber("ABC123");
+
+    Mockito.when(carRepo.findAll()).thenReturn(List.of(car));
+
+    mockMvc.perform(get("/api/cars"))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$[0].registrationNumber").value("ABC123"));
 
   }
 }
