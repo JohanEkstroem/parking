@@ -78,7 +78,7 @@ public class CustomerCarController {
 
       // httpResponse.sendRedirect("/saved");
       ResponseEntity.created(location).body(customerByID);
-      return new ResponseEntity<>("hello", HttpStatus.OK);
+      return new ResponseEntity<>("hello", HttpStatus.CREATED);
 
     }
     // httpResponse.sendRedirect("/ops");
