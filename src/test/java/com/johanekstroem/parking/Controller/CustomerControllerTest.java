@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.johanekstroem.parking.Entities.Car;
@@ -89,6 +90,7 @@ public class CustomerControllerTest {
 
     }
 
+
     @Test
     void getCarsReturnStatus200OK() throws Exception {
         mockMvc.perform(get("/api/cars"))
@@ -108,29 +110,29 @@ public class CustomerControllerTest {
 
     }
 
-    /*
-     * @Test
-     * void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
-     * var customer = new Customer();
-     * customer.setFirstName("Elona");
-     * customer.setLastName("Muska");
-     * customer.setId(1L);
-     * 
-     * var car = new Car();
-     * car.setRegistrationNumber("Taslaa005");
-     * car.setId(1L);
-     * 
-     * Mockito.when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
-     * Mockito.when(carRepo.save(Mockito.any(Car.class))).thenReturn(car);
-     * 
-     * mockMvc.perform(post("/api/customer/1/car")
-     * .contentType(MediaType.APPLICATION_JSON)
-     * .content(asJsonString(car))
-     * .accept(MediaType.APPLICATION_JSON))
-     * .andExpect(status().isCreated())
-     * .andExpect(jsonPath("$.id").exists());
-     * }
-     */
+
+    
+    @Test
+    void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
+        var customer = new Customer();
+        customer.setFirstName("Elona");
+        customer.setLastName("Muska");
+        customer.setId(1L);
+    
+        var car = new Car();
+        car.setRegistrationNumber("Taslaa005");
+        car.setId(1L);
+    
+        Mockito.when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
+        Mockito.when(carRepo.save(Mockito.any(Car.class))).thenReturn(car);
+    
+        mockMvc.perform(post("/api/customer/1/car")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(car))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+    } 
+    
 
     public static String asJsonString(final Object obj) {
         try {
