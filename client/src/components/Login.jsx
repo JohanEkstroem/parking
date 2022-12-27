@@ -36,10 +36,12 @@ const Login = () => {
       let response = await fetch(url, settings);
       let data = await response.json();
       saveAccessTokenToLocalStorage(data.access_token);
-      console.log(data.access_token);
-      navigate('/profile');
+      if (response.status === 200) {
+        navigate('/profile');
+      }
     } catch (e) {
       console.log(e);
+      navigate('/ops');
     }
   };
 
