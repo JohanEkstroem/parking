@@ -89,6 +89,28 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.id").value("2"));
 
     }
+
+
+    @Test
+    void getCarsReturnStatus200OK() throws Exception {
+        mockMvc.perform(get("/api/cars"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllCarsShouldReturnListOfCars() throws Exception {
+        Car car = new Car();
+        car.setRegistrationNumber("ABC123");
+
+        Mockito.when(carRepo.findAll()).thenReturn(List.of(car));
+
+        mockMvc.perform(get("/api/cars"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].registrationNumber").value("ABC123"));
+
+    }
+
+
     
     @Test
     void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
@@ -111,6 +133,7 @@ public class CustomerControllerTest {
                 .andExpect(status().isCreated());
     } 
     
+
     public static String asJsonString(final Object obj) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
@@ -120,6 +143,5 @@ public class CustomerControllerTest {
             throw new RuntimeException(e);
         }
     }
-   
 
 }
