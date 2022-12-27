@@ -120,16 +120,17 @@ public class CustomerControllerTest {
         var customer = new Customer();
         customer.setFirstName("Elona");
         customer.setLastName("Muska");
+        customer.setUserName("twitterCEO");
         customer.setId(1L);
 
         var car = new Car();
         car.setRegistrationNumber("Taslaa005");
         car.setId(1L);
 
-        Mockito.when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
+        Mockito.when(customerRepo.findByUserName("twitterCEO")).thenReturn(Optional.of(customer));
         Mockito.when(carRepo.save(Mockito.any(Car.class))).thenReturn(car);
 
-        mockMvc.perform(post("/api/customer/1/car")
+        mockMvc.perform(post("/api/customer/" + "twitterCEO" + "/car")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(car))
                 .accept(MediaType.APPLICATION_JSON))
