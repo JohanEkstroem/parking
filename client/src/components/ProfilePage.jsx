@@ -35,7 +35,7 @@ const ProfilePage = () => {
       let data = await response.json();
       navigate('/profile');
     } catch (e) {
-      console.log(e);
+      navigate('/ops');
     }
   };
   const onFirstNameInputChange = (e) => {
