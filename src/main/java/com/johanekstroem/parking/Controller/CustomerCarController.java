@@ -28,7 +28,7 @@ public class CustomerCarController {
   
   @PostMapping("/customer")
   public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
-    var existingCustomer = customerRepository.findByuserName(customer.getUserName());
+    var existingCustomer = customerRepository.findByUserName(customer.getUserName());
     if (existingCustomer.isPresent()) {
       Customer updateExistingCustomer = existingCustomer.get();
       updateExistingCustomer.setFirstName(customer.getFirstName());
@@ -68,17 +68,11 @@ public class CustomerCarController {
     return ResponseEntity.notFound().build();
   }
 
-  @PostMapping("/customer/{id}/car")
-  public Object addCarToCustomer(@PathVariable("id") Long id, @RequestBody Car userCar) throws Exception {
+  @PostMapping("/customer/{username}/car")
+  public Object addCarToCustomer(@PathVariable("username") String username, @RequestBody Car userCar) throws Exception {
 
-    var dummyCustomer = new Customer();
-    dummyCustomer.setFirstName("Elona");
-    dummyCustomer.setLastName("Muska");
-    dummyCustomer.setId(1L);
-    customerRepository.save(dummyCustomer);
-
-    var customerByID = customerRepository.findById(id);
-
+    var customerByID = customerRepository.findByUserName(username);
+    
     if (customerByID.isPresent()) {
       Customer customer = customerByID.get();
       Car car = new Car();
@@ -88,17 +82,16 @@ public class CustomerCarController {
 
       URI location = ServletUriComponentsBuilder
           .fromCurrentRequest()
-          .path("/{id/car}")
+          .path("/{username/car}")
           .buildAndExpand(customer.getId())
           .toUri();
 
-      // httpResponse.sendRedirect("/saved");
       ResponseEntity.created(location).body(customerByID);
       return new ResponseEntity<>("hello", HttpStatus.CREATED);
 
+    } else {
+      return new ResponseEntity<>("No user", HttpStatus.UNAUTHORIZED);
     }
-    // httpResponse.sendRedirect("/ops");
-    return null;
   }
   
 

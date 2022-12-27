@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.johanekstroem.parking.Entities.Customer;
 
-public interface CustomerRepository extends CrudRepository<Customer, Long> {
-  Optional<Customer> findByuserName(String userName);
+public interface CustomerRepository extends CrudRepository<Customer, Long>{
+    Optional<Customer> findByUserName(String username);
+
 }
