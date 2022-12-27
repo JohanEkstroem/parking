@@ -34,23 +34,23 @@ public class CustomerCarController {
       updateExistingCustomer.setFirstName(customer.getFirstName());
       updateExistingCustomer.setLastName(customer.getLastName());
 
-      var newCustomer = customerRepository.save(updateExistingCustomer);
+      var saveUpdatedCustomer = customerRepository.save(updateExistingCustomer);
 
       URI location = ServletUriComponentsBuilder
           .fromCurrentRequest()
-          .buildAndExpand(newCustomer.getId())
+          .buildAndExpand(saveUpdatedCustomer.getId())
           .toUri();
 
-      return ResponseEntity.created(location).body(newCustomer);
+      return ResponseEntity.created(location).body(saveUpdatedCustomer);
     }
-      var newCustomer = customerRepository.save(customer);
+      var saveNewCustomer = customerRepository.save(customer);
 
       URI location = ServletUriComponentsBuilder
           .fromCurrentRequest()
-          .buildAndExpand(newCustomer.getId())
+          .buildAndExpand(saveNewCustomer.getId())
           .toUri();
 
-      return ResponseEntity.created(location).body(newCustomer);
+      return ResponseEntity.created(location).body(saveNewCustomer);
 
   }
 
