@@ -81,19 +81,15 @@ const Login = () => {
             />
           </div>
           <div className="form-group">
-            <div className="row">
-              <div className="col-sm-6 col-sm-offset-3">
-                <div className={styles.loginBtn}>
-                  <input
-                    type="button"
-                    name="login-submit"
-                    id="login-submit"
-                    className="form-control btn btn-info"
-                    value="Login"
-                    onClick={handleOnClickLogin}
-                  />
-                </div>
-              </div>
+            <div className={styles.loginBtn}>
+              <input
+                type="button"
+                name="login-submit"
+                id="login-submit"
+                className="form-control btn btn-info"
+                value="Login"
+                onClick={handleOnClickLogin}
+              />
             </div>
           </div>
         </form>

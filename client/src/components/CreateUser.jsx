@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './css/Login.module.css';
 
@@ -8,7 +9,7 @@ const CreateUser = () => {
   const [password, setPassword] = useState('');
   const signUpURL = 'https://fungover.org/sign-up';
   const newCustomerURL = 'http://localhost:8080/api/customer';
-  // localhost:8080/api/customer
+  const navigate = useNavigate();
 
   const onUsernameInputChange = (e) => {
     const { value } = e.target;
@@ -41,6 +42,7 @@ const CreateUser = () => {
     };
     try {
       await fetch(url, settings);
+      navigate('/login');
     } catch (e) {
       console.log(e);
     }
@@ -77,19 +79,15 @@ const CreateUser = () => {
             />
           </div>
           <div className="form-group">
-            <div className="row">
-              <div className="col-sm-6 col-sm-offset-3">
-                <div className={styles.loginBtn}>
-                  <input
-                    type="button"
-                    name="login-submit"
-                    id="login-submit"
-                    className="form-control btn btn-info"
-                    value="Create User"
-                    onClick={handleOnClickCreateUser}
-                  />
-                </div>
-              </div>
+            <div className={styles.loginBtn}>
+              <input
+                type="button"
+                name="login-submit"
+                id="login-submit"
+                className="form-control btn btn-info"
+                value="Create User"
+                onClick={handleOnClickCreateUser}
+              />
             </div>
           </div>
         </form>
