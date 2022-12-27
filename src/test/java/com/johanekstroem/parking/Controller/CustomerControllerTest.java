@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -91,6 +92,7 @@ public class CustomerControllerTest {
     }
 
 
+
     @Test
     void getCarsReturnStatus200OK() throws Exception {
         mockMvc.perform(get("/api/cars"))
@@ -112,27 +114,49 @@ public class CustomerControllerTest {
 
 
     
+
     @Test
     void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
         var customer = new Customer();
         customer.setFirstName("Elona");
         customer.setLastName("Muska");
         customer.setId(1L);
-    
+
         var car = new Car();
         car.setRegistrationNumber("Taslaa005");
         car.setId(1L);
-    
+
         Mockito.when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
         Mockito.when(carRepo.save(Mockito.any(Car.class))).thenReturn(car);
-    
+
         mockMvc.perform(post("/api/customer/1/car")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(car))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-    } 
+
+    }
+
+    @Test
+    void getCarByIdReturnCarWithRequestedId() throws Exception {
+        Car car = new Car();
+        car.setRegistrationNumber("ABC123");
+        car.setId(1L);
+
+        Optional<Car> optionalCar = Optional.of(car);
+
+        Mockito.when(carRepo.findById(ArgumentMatchers.any())).thenReturn(optionalCar);
+
+        mockMvc.perform(get("/api/cars/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.registrationNumber").value("ABC123"))
+                .andExpect(jsonPath("$.id").value("1"));
+    }
+
+ 
     
+
 
     public static String asJsonString(final Object obj) {
         try {
