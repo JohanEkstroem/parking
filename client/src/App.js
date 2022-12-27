@@ -4,6 +4,7 @@ import Navbar from './components/Navbar.jsx';
 import Login from './components/Login.jsx';
 import Car from './components/Car.jsx';
 import Ops from './components/Ops.jsx';
+import ProfilePage from './components/ProfilePage';
 
 import CreateUser from './components/CreateUser';
 import { useState, useEffect } from 'react';
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/createUser" element={<CreateUser />} />
           <Route exact path="/car" element={<Car />} />
           <Route exact path="/ops" element={<Ops />} />
+          <Route exact path="/profile" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </>

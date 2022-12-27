@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './css/Login.module.css';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const shouldRedirect = true;
+  const navigate = useNavigate();
   const authURL = 'https://fungover.org/auth';
   const onUsernameInputChange = (e) => {
     const { value } = e.target;
@@ -35,6 +38,7 @@ const Login = () => {
       let data = await response.json();
       saveAccessTokenToLocalStorage(data.access_token);
       console.log(data.access_token);
+      navigate('/profile');
     } catch (e) {
       console.log(e);
     }
