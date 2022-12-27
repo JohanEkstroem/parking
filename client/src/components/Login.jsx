@@ -4,7 +4,6 @@ import styles from './css/Login.module.css';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const shouldRedirect = true;
   const navigate = useNavigate();
   const authURL = 'https://fungover.org/auth';
   const onUsernameInputChange = (e) => {

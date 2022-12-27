@@ -10,9 +10,6 @@ const CreateUser = () => {
   const newCustomerURL = 'http://localhost:8080/api/customer';
   // localhost:8080/api/customer
 
-  //NOTES:
-  //CreateUser is on hold for now
-
   const onUsernameInputChange = (e) => {
     const { value } = e.target;
     setUsername(value);
@@ -26,7 +23,6 @@ const CreateUser = () => {
   const handleOnClickCreateUser = (e) => {
     e.preventDefault();
     postNewUser(signUpURL);
-    //postNewCustomerToLocalHost(newCustomerURL);
     redirect('/login');
   };
 
