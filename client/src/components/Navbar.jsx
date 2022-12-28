@@ -17,6 +17,9 @@ const Navbar = () => {
         <Link className={styles.navMenu} to="/car">
           Car
         </Link>
+        <Link className={styles.navMenu} to="/parking">
+          Parking
+        </Link>
         <Link className={styles.navMenu} to="/profile">
           Profile
         </Link>

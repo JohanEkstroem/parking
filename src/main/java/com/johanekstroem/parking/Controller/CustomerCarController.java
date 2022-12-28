@@ -1,6 +1,7 @@
 package com.johanekstroem.parking.Controller;
 
 import java.net.URI;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -101,7 +102,7 @@ public class CustomerCarController {
   }
 
   
-  @GetMapping("/cars/{id}")
+  @GetMapping("/car/{id}")
   public ResponseEntity<Car> getAllCarsByID(@PathVariable("id") Long id) {
     var car = carRepository.findById(id);
     if (car.isPresent()) {
@@ -109,5 +110,14 @@ public class CustomerCarController {
     }
     return ResponseEntity.notFound().build();
   }
-
+  
+  @GetMapping("/cars/{username}")
+  public ResponseEntity<List<Car>> getAllCarsByUserName(@PathVariable("username") String username) throws Exception {
+    var carByUsername = carRepository.findByUserName(username);
+    if (carByUsername.size() > 0) {
+      return ResponseEntity.ok().body(carByUsername);
+    }
+    return ResponseEntity.notFound().build();
+  }
+  
 }

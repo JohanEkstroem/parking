@@ -12,25 +12,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
-
 @Controller
 public class PagesController {
 
-    @GetMapping("/home")
-    public String viewHomePage(){
-        return "home";
-    }
+    // @GetMapping("/home")
+    // public String viewHomePage(){
+    //     return "home";
+    // }
 
- @RequestMapping(value = "/parking", method = RequestMethod.POST)
-    public String createParking(@ModelAttribute @RequestBody ParkingEvent parkingevent){
-       return ResponseEntity.ok().toString();
+//  @RequestMapping(value = "/parking", method = RequestMethod.POST)
+//     public String createParking(@ModelAttribute @RequestBody ParkingEvent parkingevent){
+//        return ResponseEntity.ok().toString();
 
-    }
-    @GetMapping ("/parking")
-    public String viewParkingPage(Model model){
-        model.addAttribute("parkingEvent",new ParkingEvent());
-        return "parkingevent";
-    }
+//     }
+    // @GetMapping ("/parking")
+    // public String viewParkingPage(Model model){
+    //     model.addAttribute("parkingEvent",new ParkingEvent());
+    //     return "parkingevent";
+    // }
 
     // @RequestMapping(value = "/car", method = RequestMethod.POST)
     // public String createParking(@ModelAttribute Car car) {
@@ -53,25 +52,25 @@ public class PagesController {
     //     return "carregister";
     // }
 
-    @GetMapping("/login")
-    public String viewLoginPage(){
-        return "login";
-    }
+    // @GetMapping("/login")
+    // public String viewLoginPage(){
+    //     return "login";
+    // }
 
-    @GetMapping("/saved")
-    public String viewParkingStarted(){
-        return "saved";
-    }
+    // @GetMapping("/saved")
+    // public String viewParkingStarted(){
+    //     return "saved";
+    // }
 
-    @GetMapping("/ops")
-    public String viewParkingNotStarted(){
-        return "ops";
-    }
+    // @GetMapping("/ops")
+    // public String viewParkingNotStarted(){
+    //     return "ops";
+    // }
 
-    @GetMapping("/access-denied")
-    public String accessDenied() {
-        return "/error/access-denied";
-    }
+    // @GetMapping("/access-denied")
+    // public String accessDenied() {
+    //     return "/error/access-denied";
+    // }
 
 
 }
