@@ -28,14 +28,30 @@ public class CustomerCarController {
   
   @PostMapping("/customer")
   public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
-    var newCustomer = customerRepository.save(customer);
+    var existingCustomer = customerRepository.findByUserName(customer.getUserName());
+    if (existingCustomer.isPresent()) {
+      Customer updateExistingCustomer = existingCustomer.get();
+      updateExistingCustomer.setFirstName(customer.getFirstName());
+      updateExistingCustomer.setLastName(customer.getLastName());
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(newCustomer.getId())
-                .toUri();
+      var saveUpdatedCustomer = customerRepository.save(updateExistingCustomer);
 
-        return ResponseEntity.created(location).body(newCustomer);
+      URI location = ServletUriComponentsBuilder
+          .fromCurrentRequest()
+          .buildAndExpand(saveUpdatedCustomer.getId())
+          .toUri();
+
+      return ResponseEntity.created(location).body(saveUpdatedCustomer);
+    }
+      var saveNewCustomer = customerRepository.save(customer);
+
+      URI location = ServletUriComponentsBuilder
+          .fromCurrentRequest()
+          .buildAndExpand(saveNewCustomer.getId())
+          .toUri();
+
+      return ResponseEntity.created(location).body(saveNewCustomer);
+
   }
 
   @GetMapping("/customer")
