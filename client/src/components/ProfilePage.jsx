@@ -33,9 +33,9 @@ const ProfilePage = () => {
     try {
       let response = await fetch(url, settings);
       let data = await response.json();
-      navigate('/profile');
+      navigate('/');
     } catch (e) {
-      console.log(e);
+      navigate('/ops');
     }
   };
   const onFirstNameInputChange = (e) => {
@@ -52,55 +52,47 @@ const ProfilePage = () => {
       <div className={styles.container}>
         <h1 className="text-white mt-5">Welcome {userName}!</h1>
         <h2 className="bg-dark text-white mt-5">Please Update Profile</h2>
-        <div>
-          <div className="ml-5">
-            <div className="col-md-6 col-md-offset-3">
-              <form>
-                <div className="form-group">
-                  <label htmlFor="firstName"></label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    className="form-control"
-                    placeholder="First Name"
-                    autoComplete="true"
-                    value={firstName}
-                    onChange={onFirstNameInputChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="lastName"></label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    className="form-control"
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={onLastNameInputChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <div className="row">
-                    <div className="col-sm-6 col-sm-offset-3">
-                      <div className={styles.loginBtn}>
-                        <input
-                          type="button"
-                          name="login-submit"
-                          id="login-submit"
-                          className="form-control btn btn-info"
-                          value="Update Profile"
-                          onClick={handleOnClickMe}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
+        <form>
+          <div className="form-group">
+            <label htmlFor="firstName"></label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              className="form-control"
+              placeholder="First Name"
+              autoComplete="true"
+              value={firstName}
+              onChange={onFirstNameInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="lastName"></label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              className="form-control"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={onLastNameInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <div className="row">
+              <div className={styles.loginBtn}>
+                <input
+                  type="button"
+                  name="login-submit"
+                  id="login-submit"
+                  className="form-control btn btn-info"
+                  value="Update Profile"
+                  onClick={handleOnClickMe}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );
