@@ -113,8 +113,6 @@ public class CustomerControllerTest {
     }
 
 
-    
-
     @Test
     void postCustomerCarToCustomerShouldCreateCustomersCar() throws Exception {
         var customer = new Customer();
@@ -148,15 +146,15 @@ public class CustomerControllerTest {
 
         Mockito.when(carRepo.findById(ArgumentMatchers.any())).thenReturn(optionalCar);
 
-        mockMvc.perform(get("/api/cars/1"))
+        mockMvc.perform(get("/api/car/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.registrationNumber").value("ABC123"))
                 .andExpect(jsonPath("$.id").value("1"));
     }
 
- 
-    
+
+
 
 
     public static String asJsonString(final Object obj) {
